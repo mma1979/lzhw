@@ -235,7 +235,7 @@ print(comp_gc.compressed[0].decompress() == list(map(str, gc_original.iloc[:, 0]
 <pre><code class="python">comp_gc.save_to_file(&quot;gc_compressed.txt&quot;)
 </code></pre>
 
-<p>Checking the size of the compressed file, it is <strong>134 KB</strong>. Meaning that in total we saved around <strong>39%</strong>.
+<p>Checking the size of the compressed file, it is <strong>87 KB</strong>. Meaning that in total we saved around <strong>60%</strong>.
 Future versions will be optimized to save more space.</p>
 <p>Let's now check when we reload the file, will we lose any information or not.</p>
 <pre><code class="python">## Load the file
