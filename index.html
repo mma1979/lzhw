@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>lzhw</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "lzhw";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> lzhw</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href=".">lzhw</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#compressing-dataframes">Compressing DataFrames</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#saving-and-loading-compressed-dataframes">Saving and Loading Compressed DataFrames</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#compressing-bigger-dataframes">Compressing Bigger DataFrames</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">lzhw</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>lzhw</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="lzhw">lzhw</h1>
+<p><a href="https://mnoorfawi.github.io/lzhw/"><img alt="" src="https://img.shields.io/badge/docs-latest-blue.svg" /></a> 
+<a href="https://travis-ci.com/MNoorFawi/lzhw"><img alt="Build Status" src="https://travis-ci.com/MNoorFawi/lzhw.svg?branch=master" /></a></p>
+<p><strong>Compression</strong> library to compress big lists and/or pandas dataframes using an <strong>optimized algorithm (lzhw)</strong> developed from Lempel-Ziv, Huffman and LZ-Welch techniques.</p>
+<h2 id="quick-start">Quick Start</h2>
+<pre><code class="bash">pip install lzhw
+</code></pre>
+
+<pre><code class="python">import lzhw
+
+sample_data = [&quot;Sunny&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Overcast&quot;, &quot;Sunny&quot;, &quot;Sunny&quot;,
+               &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Sunny&quot;, 
+               &quot;Overcaste&quot;]
+
+compressed = lzhw.LZHW(sample_data)
+## let's see how the compressed object looks like:
+print(compressed)
+# 1111101101010011111101101010011100000010
+
+## its size
+print(compressed.size())
+# 32
+
+## size of original
+from sys import getsizeof
+print(getsizeof(sample_data))
+# 216
+
+print(compressed.space_saving())
+# space saving from original to compressed is 85%
+
+## Let's decompress and check whether there is any information loss
+decomp = compressed.decompress()
+print(decomp == sample_data)
+# True
+</code></pre>
+
+<p>As we saw, the LZHW class has saved 85% of the space used to store the original list without any loss.
+The class has also some useful helper methods as <strong>space_saving</strong>, <strong>size</strong>, and <strong>decompress()</strong> to revert back to original.</p>
+<p>Another example with numeric data.</p>
+<pre><code class="python">from random import sample, choices
+
+numbers = choices(sample(range(0, 5), 5), k = 20)
+comp_num = lzhw.LZHW(numbers)
+
+print(getsizeof(numbers) &gt; comp_num.size())
+# True
+
+print(numbers == list(map(int, comp_num.decompress()))) ## make it int again
+# True
+
+print(comp_num.space_saving())
+# space saving from original to compressed is 88%
+</code></pre>
+
+<p>Let's look at how the compressed object is stored and how it looks like when printed:
+LZHW class has an attribute called <strong>compressed</strong> which is the integer of the encoded bitstring</p>
+<pre><code class="python">print(comp_num.compressed) # how the compressed is saved (as integer of the bit string)
+# 103596881534874
+
+print(comp_num)
+# 10111100011100010000111010100101101111110011010
+</code></pre>
+
+<p>We can also write the compressed data to files using <strong>save_to_file</strong> method, 
+and read it back and decompress it using <strong>decompress_from_file</strong> function.</p>
+<pre><code class="python">status = [&quot;Good&quot;, &quot;Bad&quot;, &quot;Bad&quot;, &quot;Bad&quot;, &quot;Good&quot;, &quot;Good&quot;, &quot;Average&quot;, &quot;Average&quot;, &quot;Good&quot;,
+          &quot;Average&quot;, &quot;Average&quot;, &quot;Bad&quot;, &quot;Average&quot;, &quot;Good&quot;, &quot;Bad&quot;, &quot;Bad&quot;, &quot;Good&quot;]
+comp_status = lzhw.LZHW(status)
+comp_status.save_to_file(&quot;status.txt&quot;)
+decomp_status = lzhw.decompress_from_file(&quot;status.txt&quot;)
+print(status == decomp_status)
+# True
+</code></pre>
+
+<h2 id="compressing-dataframes">Compressing DataFrames</h2>
+<p>lzhw doesn't work only on lists, it also compress pandas dataframes and save it into compressed files to decompress them later.</p>
+<pre><code class="python">import pandas as pd
+
+df = pd.DataFrame({&quot;a&quot;: [1, 1, 2, 2, 1, 3, 4, 4],
+                   &quot;b&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;C&quot;, &quot;D&quot;, &quot;D&quot;]})
+comp_df = lzhw.CompressedDF(df)
+</code></pre>
+
+<p>Let's check space saved by compression</p>
+<pre><code class="python">comp_space = 0
+for i in range(len(comp_df.compressed)):
+    comp_space += comp_df.compressed[i].size()
+
+print(comp_space, getsizeof(df))
+# 56 712
+
+## Test information loss
+print(comp_df.compressed[0].decompress() == list(map(str, df.a)))
+# True
+</code></pre>
+
+<h4 id="saving-and-loading-compressed-dataframes">Saving and Loading Compressed DataFrames</h4>
+<p>With lzhw we can save a data frame into a compressed file and then read it again 
+using <strong>save_to_file</strong> method and <strong>decompress_df_from_file</strong> function.</p>
+<pre><code class="python">## Save to file
+comp_df.save_to_file(&quot;comp_df.txt&quot;)
+
+## Load the file
+original = lzhw.decompress_df_from_file(&quot;comp_df.txt&quot;)
+print(original)
+#   a  b
+#0  1  A
+#1  1  A
+#2  2  B
+#3  2  B
+#4  1  A
+#5  3  C
+#6  4  D
+#7  4  D
+</code></pre>
+
+<h4 id="compressing-bigger-dataframes">Compressing Bigger DataFrames</h4>
+<p>Let's try to compress a real-world dataframe <strong>german_credit.xlsx</strong> file.
+Original txt file is <strong>219 KB</strong> on desk.</p>
+<pre><code class="python">gc_original = pd.read_excel(&quot;examples/german_credit.xlsx&quot;)
+comp_gc = lzhw.CompressedDF(gc_original)
+
+## Compare sizes in Python:
+comp_space = 0
+for i in range(len(comp_gc.compressed)):
+    comp_space += comp_gc.compressed[i].size()
+
+print(comp_space, getsizeof(gc_original))
+# 12932 548852
+
+print(comp_gc.compressed[0].decompress() == list(map(str, gc_original.iloc[:, 0])))
+# True
+</code></pre>
+
+<p><strong>Huge space saving, 97%, with no information loss!</strong></p>
+<p>Let's now write the compressed dataframe into a file and compare the sizes of the files.</p>
+<pre><code class="python">comp_gc.save_to_file(&quot;gc_compressed.txt&quot;)
+</code></pre>
+
+<p>Checking the size of the compressed file, it is <strong>134 KB</strong>. Meaning that in total we saved around <strong>39%</strong>.
+Future versions will be optimized to save more space.</p>
+<p>Let's now check when we reload the file, will we lose any information or not.</p>
+<pre><code class="python">## Load the file
+gc_original2 = lzhw.decompress_df_from_file(&quot;gc_compressed.txt&quot;)
+print(list(gc_original2.iloc[:, 13]) == list(map(str, gc_original.iloc[:, 13])))
+# True
+
+print(gc_original.shape == gc_original2.shape)
+# True
+</code></pre>
+
+<p>Perfect! There is no information loss at all.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.1
+Build Date UTC : 2020-05-28 15:32:57
+-->
