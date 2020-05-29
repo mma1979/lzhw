@@ -60,6 +60,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-lzhw-command-line-interface">Using the lzhw Command Line Interface</a>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -105,9 +107,9 @@
 
 <pre><code class="python">import lzhw
 
-sample_data = [&quot;Sunny&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Overcast&quot;, &quot;Sunny&quot;, &quot;Sunny&quot;,
-               &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Sunny&quot;, 
-               &quot;Overcaste&quot;]
+sample_data = [&quot;Sunny&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Rain&quot;, &quot;Overcast&quot;, 
+               &quot;Sunny&quot;, &quot;Sunny&quot;, &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Overcast&quot;, &quot;Overcast&quot;, &quot;Rain&quot;, 
+               &quot;Rain&quot;, &quot;Rain&quot;, &quot;Sunny&quot;, &quot;Sunny&quot;, &quot;Overcaste&quot;]
 
 compressed = lzhw.LZHW(sample_data)
 ## let's see how the compressed object looks like:
@@ -248,6 +250,38 @@ print(gc_original.shape == gc_original2.shape)
 </code></pre>
 
 <p>Perfect! There is no information loss at all.</p>
+<h2 id="using-the-lzhw-command-line-interface">Using the lzhw Command Line Interface</h2>
+<p>In <strong>lzhw_cli</strong> folder, there is a python script that can work on command line to compress and decompress files.</p>
+<pre><code class="bash">python lzhw_cli.py
+
+usage: lzhw_cli.py [-h] [-d] -f INPUT -o OUTPUT
+lzhw_cli.py: error: the following arguments are required: -f/--input, -o/--output
+</code></pre>
+
+<pre><code class="bash">python lzhw_cli.py -h
+
+usage: lzhw_cli.py [-h] [-d] -f INPUT -o OUTPUT
+
+Data Frame Compressor
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d, --decompress      decompress input into output
+  -f INPUT, --input INPUT
+                        input file to be (de)compressed
+  -o OUTPUT, --output OUTPUT
+                        output where to save result
+</code></pre>
+
+<pre><code class="bash">python lzhw_cli.py -f &quot;file_to_compress&quot; -o &quot;output&quot;
+
+compressed successfully
+</code></pre>
+
+<pre><code class="bash">python lzhw_cli.py -d -f &quot;file_to_decompress&quot; -o &quot;output&quot;
+
+decompressed successfully
+</code></pre>
               
             </div>
           </div>
@@ -292,5 +326,5 @@ print(gc_original.shape == gc_original2.shape)
 
 <!--
 MkDocs version : 1.1
-Build Date UTC : 2020-05-28 15:32:57
+Build Date UTC : 2020-05-29 07:58:32
 -->
